@@ -1,0 +1,69 @@
+buildscript {
+    project.ext {
+        serenityVersion = "3.7.0"
+    }
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath "net.serenity-bdd:serenity-gradle-plugin:"+serenityVersion
+    }
+}
+
+plugins {
+    id "net.serenity-bdd.serenity-gradle-plugin" version "3.7.0"
+}
+
+defaultTasks 'clean','test','aggregate'
+
+apply plugin: 'java'
+
+group "org.automationserenity"
+version "1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+ext {
+    slf4jVersion = '2.0.7'
+    serenityCoreVersion = '3.8.1'
+    junitVersion = '4.13.2'
+    assertJVersion = '3.23.1'
+    logbackVersion = '1.4.8'
+}
+
+dependencies {
+    implementation "ch.qos.logback:logback-classic:${logbackVersion}"
+
+    testImplementation "net.serenity-bdd:serenity-core:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-cucumber:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-screenplay-webdriver:${serenityCoreVersion}",
+            "net.serenity-bdd:serenity-ensure:${serenityCoreVersion}",
+            "junit:junit:${junitVersion}",
+            "org.assertj:assertj-core:${assertJVersion}"
+}
+
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
+
+gradle.startParameter.continueOnFailure = true
+test.finalizedBy(aggregate)
+
+
+
+
+
+
+
+
+
+
+
+
